@@ -1,0 +1,37 @@
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  stage: test
+  script:
+    - echo "Running tests"
+    - python --version
+
+build:
+  stage: build
+  script:
+    - echo "Building Docker image"
+
+deploy-dev:
+  stage: deploy
+  script:
+    - echo "Deploying to Dev"
+  only:
+    - develop
+
+deploy-prod:
+  stage: deploy
+  script:
+    - echo "Deploying to Production"
+  when: manual
+  only:
+    - main
+
+rollback:
+  stage: deploy
+  script:
+    - chmod +x deployment/rollback.sh
+    - ./deployment/rollback.sh
+  when: manual
